@@ -58,12 +58,18 @@
   [records]
   (clojure.string/join
    "\n"   
-   (map 
-    (fn [record]
-      (clojure.string/join
-       ","
-       (map
-        (fn [[key val]]
-          val)
-        record)))
-    records)))
+   (map (fn [record] (clojure.string/join "," (vals record)))
+        records)))
+
+(defn records-to-csv-threaded
+  [records]
+  (->> records
+       (map (fn [record] (clojure.string/join "," (vals record))))
+       (clojure.string/join "\n")))
+
+(defn records-to-csv-comped
+  [records]
+  ((comp
+    #(clojure.string/join "\n" %)
+    #(map (fn [record] (clojure.string/join "," (vals record))) %))
+   records))
