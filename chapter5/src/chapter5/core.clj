@@ -29,3 +29,9 @@
      (lazy-seq (cons a (rfib b (+ a b)))))
    0 1))
 
+((fn my-assoc-in
+    [m [k & ks] val]
+    (if-not (coll? m)
+      val
+      (assoc m k (my-assoc-in (get m k) ks val))))
+ {:a 1 :b [1 {:c 4 :d 5} 3]} [:b 1 :d] 6)
